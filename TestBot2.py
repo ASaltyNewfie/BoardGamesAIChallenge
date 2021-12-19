@@ -1,7 +1,7 @@
 import random
 from bot import Bot
 
-class TestBot(Bot):
+class TestBot2(Bot):
     def __init__(self):
         pass
 
@@ -10,7 +10,7 @@ class TestBot(Bot):
         return random.choice([c for c in range(board.numOfColumns()) if board.isValidMove(c)])
 
     def getName(self):
-        return "TestBot"
+        return "TestBot2"
 
     def winMessage(self):
-        return "Victory!"
+        return "Hahaha!"
