@@ -1,6 +1,7 @@
 import random
+from bot import Bot
 
-class TestBot():
+class TestBot(Bot):
     def __init__(self):
         pass
 
