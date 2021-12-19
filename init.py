@@ -14,11 +14,11 @@ def main():
     board = Connect4()
 
     if random.randint(0, 1) == 0:
-        print("Bot A will go first!")
+        print(f"{BotA.getName(BotA)} will go first!")
         FirstBot = BotA
         SecondBot = BotB
     else:
-        print("Bot B will go first!")
+        print(f"{BotB.getName(BotB)} will go first!")
         FirstBot = BotB
         SecondBot = BotA
 
@@ -37,7 +37,7 @@ def takeTurn(bot, board, player):
         print("Final board:")
         print(board)
     elif board.hasWon() != 0:
-        print(f"Bot {player} won!")
+        print(f"{bot.getName(bot)} won!")
         print(f"{bot.getName(bot)} says: {bot.winMessage(bot)}")
         print("Final board:")
         print(board)
