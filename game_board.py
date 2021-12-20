@@ -11,53 +11,39 @@ class Board():
         return self.getBoard()[row][column]
 
     def hasWon(self, how_many_in_a_line):
+        num_of_row_checks = self.numOfRows() - how_many_in_a_line + 1
+        num_of_column_checks = self.numOfColumns() - how_many_in_a_line + 1
+
         # Check for a horizontal line
         for row in range(self.numOfRows()):
-            for column in range(self.numOfColumns() - how_many_in_a_line + 1):
+            for column in range(num_of_column_checks):
                 if (n := self.getPosition(column, row)) != 0:
-                    valid = True
-                    for i in range(how_many_in_a_line):
-                        if self.getPosition(column + i, row) != n:
-                            valid = False
-                    if valid:
+                    if all(self.getPosition(column + i, row) == n for i in range(how_many_in_a_line)):
                         return n
 
         # Check for a vertical line
         for column in range(self.numOfColumns()):
-            for row in range(self.numOfRows() - how_many_in_a_line + 1):
+            for row in range(num_of_row_checks):
                 if (n := self.getPosition(column, row)) != 0:
-                    valid = True
-                    for i in range(how_many_in_a_line):
-                        if self.getPosition(column, row + i) != n:
-                            valid = False
-                    if valid:
+                    if all(self.getPosition(column, row + i) == n for i in range(how_many_in_a_line)):
                         return n
 
         # Check for a diagonal line
-        for column in range(self.numOfColumns() - how_many_in_a_line + 1):
-            for row in range(self.numOfRows() - how_many_in_a_line + 1):
+        for column in range(num_of_column_checks):
+            for row in range(num_of_row_checks):
                 if (n := self.getPosition(column, row)) != 0:
-                    valid = True
-                    for i in range(how_many_in_a_line):
-                        if self.getPosition(column + i, row + i) != n:
-                            valid = False
-                    if valid:
+                    if all(self.getPosition(column + i, row + i) == n for i in range(how_many_in_a_line)):
                         return n
 
                 inverse_column = self.numOfColumns() - column - 1
                 if (n := self.getPosition(inverse_column, row)) != 0:
-                    valid = True
-                    for i in range(how_many_in_a_line):
-                        if self.getPosition(inverse_column - i, row + i) != n:
-                            valid = False
-                    if valid:
+                    if all(self.getPosition(inverse_column - i, row + i) == n for i in range(how_many_in_a_line)):
                         return n
 
         # Check if there is an empty space
-        for column in range(self.numOfColumns()):
-            for row in range(self.numOfRows()):
-                if self.getPosition(column, row) == 0: # There is an empty space, so no winner yet
-                    return 0
+        for row in self.getBoard():
+            if 0 in row: # There is an empty space, so no winner yet
+                return 0
 
         # There are no empty spaces, and no winner, so the game is a draw
         return 4
