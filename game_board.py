@@ -63,7 +63,7 @@ class Board():
         return 4
 
     def isValidMove(self, column, row):
-        return True
+        return self.getPosition(column, row) == 0
 
     def numOfColumns(self):
         return self.__columns

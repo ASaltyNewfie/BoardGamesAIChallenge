@@ -30,7 +30,7 @@ Defines the `Board` class.
 | getBoard() | Returns a copy of the internal board array. Not recommended for use by bots, use `getPosition()` instead. |
 | getPosition(column, row) | Returns the value at the position. Position can be 0 (empty), 1, or 2. |
 | hasWon(how_many_in_a_line) | Checks if a player has completed a line of the length specified. Returns 0 if there is no winner, or 4 if there is a draw. |
-| isValidMove(column, row) | Implemented by child classes. |
+| isValidMove(column, row) | Returns `True` if the position is empty, otherwise return `False`. |
 | numOfColumns() | Self-explanatory. |
 | numofRows() | Self-explanatory. |
 | takeMove(player, column, row) | Places a piece of the player on the position. Only method which modifies the internal board. |
