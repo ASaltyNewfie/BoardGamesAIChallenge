@@ -2,8 +2,8 @@ import random
 from connect_four import Connect4
 
 def importBots():
-    bot_a_name = input("Name of bot A: ")
-    bot_b_name = input("Name of bot B: ")
+    bot_a_name = "TestBot" #input("Name of bot A: ")
+    bot_b_name = "TestBot2" #input("Name of bot B: ")
 
     globals()["BotA"] = getattr(__import__(bot_a_name), bot_a_name)
     globals()["BotB"] = getattr(__import__(bot_b_name), bot_b_name)
@@ -23,20 +23,20 @@ def main():
         SecondBot = BotA
 
     while True:
-        if board.hasWon() == 0: takeTurn(FirstBot, board, 1)
+        if board.hasWon() == -1: takeTurn(FirstBot, board, 1)
         else: break
-        if board.hasWon() == 0: takeTurn(SecondBot, board, 2)
+        if board.hasWon() == -1: takeTurn(SecondBot, board, 2)
         else: break
 
 def takeTurn(bot, board, player):
     column = bot.chooseColumn(bot, board)
     board.dropPiece(player, column)
 
-    if board.hasWon() == 4:
+    if board.hasWon() == 0:
         print(f"Draw!")
         print("Final board:")
         print(board)
-    elif board.hasWon() != 0:
+    if board.hasWon() > 0:
         print(f"{bot.getName(bot)} won!")
         print(f"{bot.getName(bot)} says: {bot.winMessage(bot)}")
         print("Final board:")

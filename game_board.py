@@ -1,3 +1,5 @@
+import numpy as np
+
 class Board():
     def __init__(self, rows=3, columns=3):
         self.__rows = int(rows)
@@ -10,57 +12,28 @@ class Board():
     def getPosition(self, column, row):
         return self.getBoard()[row][column]
 
-    def hasWon(self, how_many_in_a_line):
-        # Check for a horizontal line
-        for row in range(self.numOfRows()):
-            for column in range(self.numOfColumns() - how_many_in_a_line + 1):
-                if (n := self.getPosition(column, row)) != 0:
-                    valid = True
-                    for i in range(how_many_in_a_line):
-                        if self.getPosition(column + i, row) != n:
-                            valid = False
-                    if valid:
-                        return n
+    def hasWon(self, line_size):
+        board = np.array(self.getBoard())
+        slices = []
 
-        # Check for a vertical line
-        for column in range(self.numOfColumns()):
-            for row in range(self.numOfRows() - how_many_in_a_line + 1):
-                if (n := self.getPosition(column, row)) != 0:
-                    valid = True
-                    for i in range(how_many_in_a_line):
-                        if self.getPosition(column, row + i) != n:
-                            valid = False
-                    if valid:
-                        return n
+        # Horizontal lines
+        slices += [row for row in board]
 
-        # Check for a diagonal line
-        for column in range(self.numOfColumns() - how_many_in_a_line + 1):
-            for row in range(self.numOfRows() - how_many_in_a_line + 1):
-                if (n := self.getPosition(column, row)) != 0:
-                    valid = True
-                    for i in range(how_many_in_a_line):
-                        if self.getPosition(column + i, row + i) != n:
-                            valid = False
-                    if valid:
-                        return n
+        # Vertical lines
+        slices += [column for column in np.rot90(board)]
 
-                inverse_column = self.numOfColumns() - column - 1
-                if (n := self.getPosition(inverse_column, row)) != 0:
-                    valid = True
-                    for i in range(how_many_in_a_line):
-                        if self.getPosition(inverse_column - i, row + i) != n:
-                            valid = False
-                    if valid:
-                        return n
+        # Diagonal lines
+        slices += [board[::-1,:].diagonal(i) for i in range(-self.numOfRows()+1, self.numOfColumns())]
+        slices += [board.diagonal(i) for i in range(self.numOfColumns()-1, -self.numOfRows(), -1)]
 
-        # Check if there is an empty space
-        for column in range(self.numOfColumns()):
-            for row in range(self.numOfRows()):
-                if self.getPosition(column, row) == 0: # There is an empty space, so no winner yet
-                    return 0
+        for slice in slices:
+            for i in range(len(slice)-line_size+1):
+                p = slice[i]
+                if p > 0 and all(n==p for n in slice[i:i+line_size]):
+                    return p
 
-        # There are no empty spaces, and no winner, so the game is a draw
-        return 4
+        if 0 in board: return -1
+        else: return 0
 
     def isValidMove(self, column, row):
         return self.getPosition(column, row) == 0
